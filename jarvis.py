@@ -80,8 +80,3 @@ class Bot():
 				md = Markdown(self.all_text)
 				live.update(md)
 
-if __name__ == "__main__":
-	bot = Bot()
-	bot.print_response_stream("""run this python code:
-a = 3
-print("b" + a)""")
