@@ -1,0 +1,7 @@
+openai
+rich
+sounddevice
+numpy
+spicy
+keyboard
+faster_whisper
