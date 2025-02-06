@@ -5,3 +5,4 @@ numpy
 spicy
 keyboard
 faster_whisper
+win10toast
