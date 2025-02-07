@@ -1,9 +1,6 @@
 from google import genai
-import google.genai.types
-from google.genai.types import Tool, GenerateContentConfig, GoogleSearch, FunctionDeclaration
+from google.genai.types import Tool, GoogleSearchRetrieval, ToolCodeExecution
 from win10toast import ToastNotifier
-import os
-import sys
 
 
 # Disabling stderr because for some reason
@@ -21,7 +18,10 @@ client = genai.Client(api_key=KEY)
 
 
 search_tool = Tool(
-    google_search = GoogleSearch()
+    google_search = GoogleSearchRetrieval
+)
+code_tool = Tool(
+    code_execution = ToolCodeExecution
 )
 
 def send_notification(title: str, message: str) -> str:
@@ -40,6 +40,7 @@ def send_notification(title: str, message: str) -> str:
 
 tools_list: list
 # tools_list = [search_tool]
+helper_tool_list = [search_tool]
 tools_list = [send_notification]
 # tools_list = [set_light_values, send_notification, search_tool]
 print("FUNCTIONS INITIALISED")

@@ -1,5 +1,5 @@
 import time
-from bot import Bot
+from deep_bot import Bot
 import sounddevice as sd
 import numpy as np
 from scipy.io.wavfile import write
@@ -72,7 +72,7 @@ if __name__ == "__main__":
 				continue
 			if not text.strip():
 				continue
-			bot.print_response(text)
+			print("-"*40, bot.send_message(text), sep="\n")
 		except KeyboardInterrupt:
 			print("Quiting because of ^C")
 			break
