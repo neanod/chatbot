@@ -12,7 +12,7 @@ Install dependencies:
 pip install -r requirements.txt
 ```
 
-Run a script
+Run the script
 
 ```
 python main.py
