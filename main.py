@@ -66,6 +66,7 @@ if __name__ == "__main__":
 				record_sound()
 				text, propability = transcribe_sound()
 				if propability < MIN_LANGUAGE_PROBABILITY:
+					print("cant detect voice")
 					continue
 			else:
 				continue

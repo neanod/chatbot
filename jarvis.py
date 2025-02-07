@@ -5,8 +5,6 @@ from google.genai import types, Client, errors
 from bot_tools import tools_list
 import warnings
 
-import bot_tools
-
 
 warnings.filterwarnings("ignore", category=UserWarning)
 with open("key", "r") as f:
