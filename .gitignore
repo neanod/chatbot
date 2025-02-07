@@ -1,3 +1,6 @@
 __pycache__/*
 key
+tg_key
 test.py
+logs/*
+to_send.txt

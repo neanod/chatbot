@@ -6,3 +6,4 @@ spicy
 keyboard
 faster_whisper
 win10toast
+python-telegram-bot

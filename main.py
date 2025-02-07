@@ -1,79 +1,48 @@
-import time
-from deep_bot import Bot
-import sounddevice as sd
-import numpy as np
-from scipy.io.wavfile import write
-import keyboard
-import queue
-from faster_whisper import WhisperModel
+import logging
+from telegram import Update
+from deep_bot import DeepBot
+from google.genai import errors
+from telegram.ext import (
+	ApplicationBuilder,
+	ContextTypes,
+	MessageHandler,
+	filters,
+)
+
+with open("tg_key", "r") as f:
+	TOKEN = f.read()
+
+logging.basicConfig(
+	format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+	level=logging.INFO
+)
+logger = logging.getLogger(__name__)
+
+def generate_response(message: str) -> str:
+	bot = DeepBot()
+	if not message.strip():
+		return "empty message detected"
+	try:
+		response = bot.send_message(message=message)
+		return response
+	except errors.ClientError as e:
+		return f"resource exhausted {e}"
+	except Exception as e:
+		return(str(e.args))
 
 
-MIN_LANGUAGE_PROBABILITY = 0.5
+async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+	if update.message and update.message.text:
+		user_text = update.message.text
+		response = generate_response(user_text)
+		await update.message.reply_text(response)
+		with open("to_send.txt", "rb") as file:
+			await update.message.reply_document(document=file, filename="to_send.txt")
 
-model_size = "large-v3"
-fs = 44100       
-channels = 2
-q = queue.Queue()
-model = WhisperModel(model_size, device="cuda", compute_type="float16")
+def main():
+	app = ApplicationBuilder().token(TOKEN).build()
+	app.add_handler(MessageHandler(filters.TEXT & (~filters.COMMAND), handle_message))
+	app.run_polling()
 
-
-def callback(indata, frames, time, status):
-	if status:
-		print(status)
-	q.put(indata.copy())
-
-
-def transcribe_sound(min_propability: float = MIN_LANGUAGE_PROBABILITY):
-	segments, info = model.transcribe("voice.wav", beam_size=5)
-
-	if info.language_probability < min_propability:
-		return "", info.language_probability
-	print("Detected language '%s' with probability %f" % (info.language, info.language_probability))
-
-	res = ""
-	print("usr>>>", end="")
-	for segment in segments:
-		# print("[%.2fs -> %.2fs] %s" % (segment.start, segment.end, segment.text))
-		print(segment.text, end="", flush=True)
-		res += segment.text
-	print()
-	return res, info.language_probability
-
-
-def record_sound():
-	recorded_frames = []
-	with sd.InputStream(samplerate=fs, channels=channels, callback=callback):
-		while keyboard.is_pressed('f13'):
-			try:
-				data = q.get(timeout=0.1)
-				recorded_frames.append(data)
-			except queue.Empty:
-				pass
-	write("voice.wav", fs, np.concatenate(recorded_frames, axis=0))
-
-
-print("VOICE FUNCTIONS INITIALISED")
-
-if __name__ == "__main__":
-	bot = Bot()
-	print("JARVIS INITIALISED")
-	while True:
-		try:
-			time.sleep(0.1)
-			if keyboard.is_pressed("ctrl+f13"):
-				text = input("usr>>>")
-			elif keyboard.is_pressed("f13"):
-				record_sound()
-				text, propability = transcribe_sound()
-				if propability < MIN_LANGUAGE_PROBABILITY:
-					print("cant detect voice")
-					continue
-			else:
-				continue
-			if not text.strip():
-				continue
-			print("-"*40, bot.send_message(text), sep="\n")
-		except KeyboardInterrupt:
-			print("Quiting because of ^C")
-			break
-print("Ended up successfully")
+if __name__ == '__main__':
+	main()
