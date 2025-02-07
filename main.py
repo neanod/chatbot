@@ -1,5 +1,5 @@
 import time
-from jarvis import Bot
+from bot import Bot
 import sounddevice as sd
 import numpy as np
 from scipy.io.wavfile import write
@@ -12,7 +12,7 @@ MIN_LANGUAGE_PROBABILITY = 0.5
 
 model_size = "large-v3"
 fs = 44100       
-channels = 2     
+channels = 2
 q = queue.Queue()
 model = WhisperModel(model_size, device="cuda", compute_type="float16")
 

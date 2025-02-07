@@ -1,4 +1,4 @@
-from jarvis import Bot
+from bot import Bot
 import colorama
 
 
