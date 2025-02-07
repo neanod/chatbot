@@ -6,7 +6,6 @@ from scipy.io.wavfile import write
 import keyboard
 import queue
 from faster_whisper import WhisperModel
-import os
 
 
 MIN_LANGUAGE_PROBABILITY = 0.5
@@ -53,9 +52,11 @@ def record_sound():
 	write("voice.wav", fs, np.concatenate(recorded_frames, axis=0))
 
 
+print("VOICE FUNCTIONS INITIALISED")
+
 if __name__ == "__main__":
 	bot = Bot()
-	print("Initialized successfully")
+	print("JARVIS INITIALISED")
 	while True:
 		try:
 			time.sleep(0.1)
@@ -66,7 +67,6 @@ if __name__ == "__main__":
 				text, propability = transcribe_sound()
 				if propability < MIN_LANGUAGE_PROBABILITY:
 					continue
-				os.remove("voice.wav")
 			else:
 				continue
 			if not text.strip():
