@@ -37,26 +37,9 @@ def send_notification(title: str, message: str) -> str:
     toaster.show_toast(title, message, duration=0)
     return "successfully send"
 
-def set_light_values(brightness: int, color_temp: str) -> dict[str, int | str]:
-    """Set the brightness and color temperature of a room light. (mock API).
-
-    Args:
-        brightness: Light level from 0 to 100. Zero is off and 100 is full brightness
-        color_temp: Color temperature of the light fixture, which can be `daylight`, `cool` or `warm`.
-
-    Returns:
-        A dictionary containing the set brightness and color temperature.
-    """
-    print(f"set_light_values called, args: {brightness=} {color_temp=}")
-    return {
-        "brightness": brightness,
-        "colorTemperature": color_temp
-    }
-
-
 
 tools_list: list
 # tools_list = [search_tool]
-tools_list = [set_light_values, send_notification]
+tools_list = [send_notification]
 # tools_list = [set_light_values, send_notification, search_tool]
 print("FUNCTIONS INITIALISED")
