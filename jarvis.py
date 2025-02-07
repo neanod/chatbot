@@ -1,10 +1,11 @@
+from http import client
 from json import tool
 from pprint import pp
 from urllib import response
 from rich.live import Live
 from rich.console import Console
 from rich.markdown import Markdown
-from google.genai import types, Client
+from google.genai import types, Client, errors
 from bot_tools import tools_list
 import warnings
 
@@ -43,7 +44,12 @@ class Bot():
 	
 	def create_response(self, message: str):
 		if not message.strip(): raise ValueError("Empty Message")
-		response = self.chat.send_message(message)
+		try:
+			response = self.chat.send_message(message)
+		except errors.ClientError:
+			print("VPN is not enabled, probably")
+			print(errors.ClientError)
+			quit()
 		return response
 	
 	def send_message(self, message: str, stream: bool = False):
@@ -62,6 +68,7 @@ class Bot():
 
 if __name__ == "__main__":
 	bot = Bot(sys_prompt="You are helpful assistant. If you will get any errors from api you need to write them out so i can see it")
-	print(bot.send_message("When the next solar eclipce would be in sibir'. Search the web for this information"))
+	# print(bot.send_message("When the next solar eclipce would be in sibir' and who is the eldest man in zimbabve, russia, usa, and how many childs was born in antarctic. Search the web for this information"))
 	# print(bot.send_message("Send me notification with title 'Title' and message 'some words' and tell me how many r's in strawberry"))
 	# print(bot.send_message("Change the lights to warm and bright 50% and send me notification if everything is ok"))
+	print(genai_client)

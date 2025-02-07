@@ -56,6 +56,7 @@ def set_light_values(brightness: int, color_temp: str) -> dict[str, int | str]:
 
 
 tools_list: list
-tools_list = [search_tool]
+# tools_list = [search_tool]
+tools_list = [set_light_values, send_notification]
 # tools_list = [set_light_values, send_notification, search_tool]
 print("FUNCTIONS INITIALISED")

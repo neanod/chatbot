@@ -71,7 +71,7 @@ if __name__ == "__main__":
 				continue
 			if not text.strip():
 				continue
-			bot.print_response_stream(text)
+			bot.print_response(text)
 		except KeyboardInterrupt:
 			print("Quiting because of ^C")
 			break
