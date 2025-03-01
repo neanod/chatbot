@@ -1,4 +1,3 @@
-from ast import For
 from bot import Bot, helper_tool_list, tools_list, genai_client
 from google.genai import types
 from prompts import bot_helper_prompt, deep_bot_prompt
