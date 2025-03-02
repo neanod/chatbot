@@ -4,3 +4,6 @@ spicy
 keyboard
 win10toast
 python-telegram-bot
+rich
+google-genai
+colorama
